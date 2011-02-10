@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  location: MyString
+  description: MyText
+  title: MyString
+  rating: 1
+  absolute_rank: 1
+
+two:
+  location: MyString
+  description: MyText
+  title: MyString
+  rating: 1
+  absolute_rank: 1

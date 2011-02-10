@@ -1,0 +1,19 @@
+<form method="post" action="/places/parse_rate"> 
+<select name="down" >
+<% for p in Place::COMPARISONS %>
+
+<option><%= p %></option>
+<% end %>
+</select>
+<%= @place.title %>
+<select name="up" >
+<% for p in Place::COMPARISONS %>
+<option><%= p %></option>
+<% end %>
+</select>
+<input name="id" type="hidden" value=<%= @place.id %>>
+<input type="submit">submit</input>
+</form> 
+
+
+ 

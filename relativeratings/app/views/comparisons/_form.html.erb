@@ -1,0 +1,21 @@
+<%= form_for(@comparison) do |f| %>
+  <% if @comparison.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comparison.errors.count, "error") %> prohibited this comparison from being saved:</h2>
+
+      <ul>
+      <% @comparison.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :times %><br />
+    <%= f.text_field :times %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
