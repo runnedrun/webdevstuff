@@ -5,7 +5,7 @@ class CreatePlaces < ActiveRecord::Migration
       t.text :description
       t.string :title
       t.integer :rating
-      t.belongs_to :comparison
+   
  
       t.integer :absolute_rank
 

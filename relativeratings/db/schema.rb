@@ -14,13 +14,13 @@ ActiveRecord::Schema.define(:version => 20110209165207) do
 
   create_table "comparisons", :force => true do |t|
     t.integer  "times"
-    t.integer  "helper_id"
+    t.integer  "place_id"
+    t.string   "compared_to"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "helpers", :force => true do |t|
-    t.integer  "place_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(:version => 20110209165207) do
     t.text     "description"
     t.string   "title"
     t.integer  "rating"
-    t.integer  "comparison_id"
     t.integer  "absolute_rank"
     t.datetime "created_at"
     t.datetime "updated_at"

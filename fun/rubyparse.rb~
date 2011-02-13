@@ -1,0 +1,2 @@
+def parser (filename)
+  file.new(filename,'r')

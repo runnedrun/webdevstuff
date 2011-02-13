@@ -1,14 +1,14 @@
 <form method="post" action="/places/parse_rate"> 
-<select name="down" >
-<% for p in Place::COMPARISONS %>
+<select name="down" multiple="multiple" >
+<% for p in Place::COMPIDS %>
 
-<option><%= p %></option>
+<option value=<%= p %>> <%= Place.find(p).title %> </option>
 <% end %>
 </select>
 <%= @place.title %>
-<select name="up" >
-<% for p in Place::COMPARISONS %>
-<option><%= p %></option>
+<select name="up" multiple="multiple">
+<% for p in Place::COMPIDS %>
+<option value=<%= p %>> <%= Place.find(p).title %> </option>
 <% end %>
 </select>
 <input name="id" type="hidden" value=<%= @place.id %>>

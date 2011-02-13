@@ -27,8 +27,8 @@
 
 <p>
   <b>has been compared against,</b>
-  <% for h in @place.helpers %>
-  <%= h.comparison.place.title %>
+  <% for h in @place.comparisons %>
+  <%= Place.find(h.compared_to).title %>
   <% end %>
 </p>
 

@@ -20,17 +20,19 @@
     <td><%= place.title %></td>
     <td><%= place.rating %></td>
     <td><%= place.absolute_rank %></td>
-    <td><% for h in place.helpers %>
-      <%= h.comparison.place.title %> <%= h.comparison.times %>,
+    <td><% for h in place.comparisons %>
+      <%= Place.find(h.compared_to).title %> <%= h.times %>,
       <% end %>
     </td>
     <td><%= link_to 'Show', place %></td>
     <td><%= link_to 'Edit', edit_place_path(place) %></td>
     <td><%= link_to 'Destroy', place, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'New Showdown!', showdown_path(place) %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
+
 
 <%= link_to 'New Place', new_place_path %>

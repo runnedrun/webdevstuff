@@ -1,7 +1,9 @@
 Relativeratings::Application.routes.draw do |map|
   resources :comparisons
-  map.connect '/places/new_rating/:id',  :controller => "places", :action => "new_rating"
+  map.showdown '/places/new_rating/:id',  :controller => "places", :action => "new_rating"
   map.connect '/places/parse_rate/',  :controller => "places", :action => "parse_rate"
+   map.connect '/places/rated_against/:id',  :controller => "places", :action => "rated_against"
+  map.connect '/places/all_places',  :controller => "places", :action => "all_places"
   resources :places
   root :to => "places#new"
   # The priority is based upon order of creation:

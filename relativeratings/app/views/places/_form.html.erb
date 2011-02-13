@@ -31,7 +31,7 @@
     <%= f.label :absolute_rank %><br />
     <%= f.text_field :absolute_rank %>
   </div>
-  <%= f.select :comparison, Place::COMPARISONS,
+  <%= f.select :comparisons, Place::COMPARISONS,
     :prompt => 'select comparison' %>
   <div class="actions">
     <%= f.submit %>

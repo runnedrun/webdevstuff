@@ -46,38 +46,38 @@ class PlacesController < ApplicationController
 
   def parse_rate
     current_place = Place.find(params["id"])
-    up = [params["up"]]
-    down = [params["down"]]
-    
-    
-    for helper in current_place.helpers.all 
-      place = helper.comparison.place
-      if up.include(place.title)
-        helper.comparison.times +=1
-        helper.comparison.save
-        up.delete(place.title)
-        Place.find(:first, :conditions => ["title =:c",{:c => place.title}]).rating+=1
-      
-      elsif down.include(place.title)
-        helper.comparison.times +=1
-        helper.comparison.save 
-        down.delete(place.title)
-        Place.find(:first, :conditions => ["title =:c",{:c => place.title}]).rating-=1
+    up = params["up"]
+    down = params["down"]
 
+    for comp in current_place.comparisons.all
+      place = comp.compared_to
+      if up.include?(place)
+        comp.times +=1
+        comp.save
+        up.delete(place)
+        p = Place.find(place)
+        p.rating +=1
+        p.save
+      end
+      if down.include?(place)
+        comp.times +=1
+        comp.save 
+        down.delete(place)
+        p = Place.find(place)
+        p.rating-=1
+        p.save
       end
     end
 
-    for title in up
-      place = Place.find(:first, :conditions => ["title =:c",{:c => title}])
-      help = Helper.create(:place => current_place)
-      comp = Comparison.create(:helper => help, :times =>1, :place => place)
+    for id in up
+      place = Place.find(id)
+      comp = Comparison.create(:compared_to => id, :times =>1, :place => current_place)
       place.rating+=1
       place.save
     end
-    for title in down
-      place = Place.find(:first, :conditions => ["title =:c",{:c => title}])
-      help = Helper.create(:place => current_place)
-      comp = Comparison.create(:helper => help, :times =>1, :place => place)
+    for id in down
+      place = Place.find(id)
+      comp = Comparison.create(:compared_to => id, :times =>1, :place => current_place)
       place.rating-=1
       place.save
     end
@@ -85,26 +85,42 @@ class PlacesController < ApplicationController
     
     current_place.save
     redirect_to :action => "show", :id => current_place.id
-    return
+    return 
     
   end
 
+  def rated_against
+    id = params[:id]
+    place = Place.find(id)
+    against = Hash.new
+    for comp in place.comparisons.all
+      against[Place.find(comp.compared_to).title] = comp.times
+    end
+    
+    render :json => against
+    return
+  end
+
+  def all_places
+    render :json =>  Place.all
+  end
+
   def create
-    comp = params[:place][:comparison]
+    comp = params[:place][:comparisons]
     ncomp = false
     if not comp.length ==0
       ncomp = Place.find(:first, :conditions => ["title = :c", {:c => comp}])  
     end
-    params[:place].delete(:comparison)
+    params[:place].delete(:comparisons)
     @place = Place.new(params[:place])
     if ncomp
-      help = Helper.new(:place => @place)
-      r = Comparison.new(:helper => help,:place => ncomp, :times =>1)
+     
+      r = Comparison.new(:compared_to => ncomp.id,:place => @place, :times =>1)
       
-      help.save
+      
       r.save
     end
-    
+  
 
     
     respond_to do |format|
@@ -115,9 +131,9 @@ class PlacesController < ApplicationController
         format.html { render :action => "new" }
         format.xml  { render :xml => @place.errors, :status => :unprocessable_entity }
       end
+  
     end
   end
-
   # PUT /places/1
   # PUT /places/1.xml
   def update
@@ -139,6 +155,10 @@ class PlacesController < ApplicationController
   def destroy
     @place = Place.find(params[:id])
     @place.destroy
+    bad_comps = Comparison.find(:all, :conditions => "compared_to = #{params[:id]}")
+    for comp in bad_comps
+      comp.destroy
+    end
 
     respond_to do |format|
       format.html { redirect_to(places_url) }

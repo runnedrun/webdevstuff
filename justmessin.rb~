@@ -1,0 +1,3 @@
+def funfun(st)
+  {|stuff|
+    print stuff}

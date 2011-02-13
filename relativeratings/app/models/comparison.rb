@@ -1,4 +1,3 @@
 class Comparison < ActiveRecord::Base
-  belongs_to :helper
-  has_one :place
+  belongs_to :place
 end
